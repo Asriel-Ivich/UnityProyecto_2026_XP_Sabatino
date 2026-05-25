@@ -1,15 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using UnityEngine.UI;
+
 
 public class PlayerController : MonoBehaviour
 {
-    private float horizontalMove;
-    private float verticalMove;
-
-    public CharacterController player;
-
-    public float playerSpeed = 5f;
+    #region CORE
 
     void Start()
     {
@@ -18,12 +17,80 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        Update_MovimientoPlayer();
+        
+    }
+    #endregion CORE 
+
+    #region MOVIMIENTO
+    private float horizontalMove;
+    private float verticalMove;
+
+    public CharacterController player;
+
+    [Header("Movimiento")]
+
+    public float PlayerSpeed = 5f;
+
+    private void Update_MovimientoPlayer()
+    {
+        //Movimiento basico
         horizontalMove = Input.GetAxis("Horizontal");
         verticalMove = Input.GetAxis("Vertical");
 
-        Vector3 move = new Vector3(horizontalMove, 0, verticalMove).normalized;
+        //Movimiento diagonal, se estabiliza la velociadad de Horizontal y vertical con el Normalized
+        Vector3 move = transform.right * horizontalMove + transform.forward * verticalMove;
 
-        player.Move(move * playerSpeed * Time.deltaTime);
+        move.Normalize();
 
+        SetGravity();
+        PlayerSkills();
+
+
+        Vector3 finalMove = move * PlayerSpeed + velocity;
+
+        player.Move(finalMove * Time.deltaTime);
     }
+
+    #region GRAVEDAD
+
+    public float gravity = -9.8f;
+
+    private Vector3 velocity;
+
+    void SetGravity()
+    {
+        if (player.isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
+        
+
+        velocity.y += gravity * Time.deltaTime;
+    }
+
+    #endregion GRAVEDAD
+
+    #endregion MOVIMIENTO
+
+    #region SALTO
+
+    public float jumpHeight = 2f;
+
+    public void PlayerSkills()
+    {
+        if (player.isGrounded && Input.GetButtonDown("Jump"))
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+    }
+
+    #endregion
+
+
+
 }
+
+
+
+
