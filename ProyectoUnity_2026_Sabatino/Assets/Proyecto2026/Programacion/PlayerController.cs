@@ -13,18 +13,23 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         player = GetComponent<CharacterController>();
+        
     }
 
     void Update()
     {
         Update_MovimientoPlayer();
-        
+        Update_Gravity();
+        Update_PlayerSkills();
+       
+
     }
     #endregion CORE 
 
     #region MOVIMIENTO
     private float horizontalMove;
     private float verticalMove;
+
 
     public CharacterController player;
 
@@ -43,10 +48,6 @@ public class PlayerController : MonoBehaviour
 
         move.Normalize();
 
-        SetGravity();
-        PlayerSkills();
-
-
         Vector3 finalMove = move * PlayerSpeed + velocity;
 
         player.Move(finalMove * Time.deltaTime);
@@ -58,13 +59,13 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 velocity;
 
-    void SetGravity()
+    private void Update_Gravity()
     {
         if (player.isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
-        
+
 
         velocity.y += gravity * Time.deltaTime;
     }
@@ -77,7 +78,7 @@ public class PlayerController : MonoBehaviour
 
     public float jumpHeight = 2f;
 
-    public void PlayerSkills()
+    private void Update_PlayerSkills()
     {
         if (player.isGrounded && Input.GetButtonDown("Jump"))
         {
@@ -86,9 +87,6 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
-
-
-
 }
 
 
