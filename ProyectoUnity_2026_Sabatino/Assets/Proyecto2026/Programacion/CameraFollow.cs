@@ -4,7 +4,7 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     [Header("Ajustes")]
-    [SerializeField] public float Sensibilidad = 100;
+    [SerializeField] public float Sensibilidad = 80f;
     [SerializeField] public Transform Player;
 
     [Header("Estados")]

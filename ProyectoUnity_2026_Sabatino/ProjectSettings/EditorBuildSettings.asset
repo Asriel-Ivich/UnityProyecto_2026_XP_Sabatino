@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Proyecto2026/MainMenu.unity
+    guid: 25e1a9a6b9a3f144cba088d42e0608d9
+  - enabled: 1
+    path: Assets/Proyecto2026/Pruebas.unity
+    guid: 775ee6416f4fb5644a397b9eeed2da75
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
