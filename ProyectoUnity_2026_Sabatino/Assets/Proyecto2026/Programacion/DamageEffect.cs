@@ -18,7 +18,7 @@ public class DamageEffect : MonoBehaviour
     private Coroutine knockbackCoroutine;
     private Rigidbody rb;
     private CharacterController characterController;
-    private NavMeshAgent navMeshAgent;
+   
     private bool isKnockbacking = false;
 
     void Start()
@@ -63,7 +63,7 @@ public class DamageEffect : MonoBehaviour
 
         yield return new WaitForSeconds(flashDuration);
 
-        // Regresa materialkes originales
+        // Restaurar materiales originales
         for (int i = 0; i < renderers.Length; i++)
         {
             renderers[i].material = originalMaterials[i];
@@ -76,12 +76,6 @@ public class DamageEffect : MonoBehaviour
     {
         if (isKnockbacking) yield break;
         isKnockbacking = true;
-
-        bool hadNavMeshAgent = navMeshAgent != null && navMeshAgent.enabled;
-        if (hadNavMeshAgent)
-        {
-            navMeshAgent.enabled = false; // Desactiva
-        }
 
         float elapsedTime = 0;
         Vector3 knockbackDir = direction.normalized;
@@ -115,16 +109,6 @@ public class DamageEffect : MonoBehaviour
             }
         }
 
-        //REACTIVA MESHAGENT
-        if (hadNavMeshAgent)
-        {
-            // Esperar un frame para asegurar que el movimiento terminó
-            yield return null;
-            navMeshAgent.enabled = true;
-
-            // Opcional: Restablecer la posición del agente para que coincida con la nueva posición
-            navMeshAgent.Warp(transform.position);
-        }
         isKnockbacking = false;
         knockbackCoroutine = null;
     }

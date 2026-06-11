@@ -1,13 +1,32 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
-public class HealthSystemEnemy : MonoBehaviour
+public class HealthSystem : MonoBehaviour
 {
     [Header("Vida")]
-    public int vidaMaxima= 200;
+    
+    public float vidaMaxima= 200;
 
-    [SerializeField] private int vidaActual;
+    //Muestra en el inspector
+    [SerializeField] public float vidaActual;
     private DamageEffect damageEffect;
 
+    [Header("Interfaz")]
+    public Image BarraSalud;
+
+    #region UI VIDA
+    private void Update()
+    {
+        ActualizarInterfaz();
+    }
+    void ActualizarInterfaz()
+    {
+        BarraSalud.fillAmount = vidaActual / vidaMaxima;
+
+    }
+    #endregion UI VIDA
     void Start()
     {
         vidaActual = vidaMaxima;
@@ -20,8 +39,6 @@ public class HealthSystemEnemy : MonoBehaviour
     {
         vidaActual -= cantidad;
 
-        //Debug.Log(gameObject.name = "DAMRecibido" + cantidad);
-
         //Calcula la direccion del ataque
         Vector3 damageDirection = transform.position - GetAttackerPosition();
         damageEffect.ApplyDamageEffect(damageDirection);
@@ -30,6 +47,18 @@ public class HealthSystemEnemy : MonoBehaviour
         {
             Morir();
         }
+
+       // Debug.Log(gameObject.name = "DAMRecibido" + cantidad);
+    }
+
+    public void CurarVida(int cantidad)
+    {
+        vidaActual += cantidad;
+
+        if(vidaActual > vidaMaxima )
+        {
+            vidaActual = vidaMaxima;
+        }
     }
 
     private Vector3 GetAttackerPosition()
@@ -37,18 +66,20 @@ public class HealthSystemEnemy : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 3f);
         foreach (var hit in hitColliders)
         {
-            if (hit.CompareTag("Player"))
+            if (hit.CompareTag("Enemy"))
                 return hit.transform.position;
         }
 
         return transform.position - Vector3.forward;
     }
 
+
+
     void Morir()
     {
-       // Debug.Log(gameObject.name + "Morido :c");
-
+        Debug.Log(gameObject.name + "Morido :c");
+        //NOTAAAA Agregar el call de la animacion de muerte
         Destroy(gameObject);
-
+    
     }
 }
