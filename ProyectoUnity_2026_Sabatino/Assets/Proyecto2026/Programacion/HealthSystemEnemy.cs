@@ -1,11 +1,10 @@
 using UnityEngine;
 
-public class HealthSystem : MonoBehaviour
+public class HealthSystemEnemy : MonoBehaviour
 {
     [Header("Vida")]
     public int vidaMaxima= 200;
 
-    //Muestra en el inspector
     [SerializeField] private int vidaActual;
     private DamageEffect damageEffect;
 
@@ -21,6 +20,8 @@ public class HealthSystem : MonoBehaviour
     {
         vidaActual -= cantidad;
 
+        //Debug.Log(gameObject.name = "DAMRecibido" + cantidad);
+
         //Calcula la direccion del ataque
         Vector3 damageDirection = transform.position - GetAttackerPosition();
         damageEffect.ApplyDamageEffect(damageDirection);
@@ -29,8 +30,6 @@ public class HealthSystem : MonoBehaviour
         {
             Morir();
         }
-
-       // Debug.Log(gameObject.name = "DAMRecibido" + cantidad);
     }
 
     private Vector3 GetAttackerPosition()
@@ -38,7 +37,7 @@ public class HealthSystem : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 3f);
         foreach (var hit in hitColliders)
         {
-            if (hit.CompareTag("Enemy"))
+            if (hit.CompareTag("Player"))
                 return hit.transform.position;
         }
 
@@ -47,9 +46,9 @@ public class HealthSystem : MonoBehaviour
 
     void Morir()
     {
-        Debug.Log(gameObject.name + "Morido :c");
-        //NOTAAAA Agregar el call de la animacion de muerte
+       // Debug.Log(gameObject.name + "Morido :c");
+
         Destroy(gameObject);
-    
+
     }
 }
